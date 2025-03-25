@@ -47,7 +47,7 @@ const CreatePlans = () => {
             return;
         }
         data.equipments = selectedOption.map((option) => option.value); // Convert to array of values
-        fetch("http://localhost:3000/post-plans", {
+        fetch("http://localhost:3000/plans", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),

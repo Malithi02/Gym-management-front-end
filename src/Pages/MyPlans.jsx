@@ -6,15 +6,18 @@ const MyPlans = () => {
     const [filteredPlans, setFilteredPlans] = useState([]); // Store original data separately
     const [isLoading, setIsLoading] = useState(true);
     const [searchText, setSearchText] = useState("");
-    const email = "gthd@gmail.com";
+    const [requestedPlans, setRequestedPlans] = useState([]); // State for requested plans
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
 
+    const [requestedCurrentPage, setRequestedCurrentPage] = useState(1); // Pagination for requested plans
+    const requestedItemsPerPage = 4; // Items per page for requested plans
+
     useEffect(() => {
         setIsLoading(true);
-        fetch(`http://localhost:3000/my-workout-plans/${email}`)
+        fetch(`http://localhost:3000/plans`)
             .then((res) => res.json())
             .then((data) => {
                 setPlans(data);
@@ -25,6 +28,16 @@ const MyPlans = () => {
                 console.error("Error fetching plans:", err);
                 setIsLoading(false);
             });
+    }, []);
+
+    useEffect(() => {
+        // Fetch requested plans
+        fetch(`http://localhost:3000/requests`)
+            .then((res) => res.json())
+            .then((data) => {
+                setRequestedPlans(data);
+            })
+            .catch((err) => console.error("Error fetching requested plans:", err));
     }, []);
 
     useEffect(() => {
@@ -51,6 +64,11 @@ const MyPlans = () => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentPlans = filteredPlans.slice(indexOfFirstItem, indexOfLastItem);
 
+    // Pagination calculations for requested plans
+    const requestedIndexOfLastItem = requestedCurrentPage * requestedItemsPerPage;
+    const requestedIndexOfFirstItem = requestedIndexOfLastItem - requestedItemsPerPage;
+    const currentRequestedPlans = requestedPlans.slice(requestedIndexOfFirstItem, requestedIndexOfLastItem);
+
     // Next and Previous page handlers
     const nextPage = () => {
         if (indexOfLastItem < filteredPlans.length) {
@@ -64,27 +82,35 @@ const MyPlans = () => {
         }
     };
 
+    // Next and Previous page handlers for requested plans
+    const nextRequestedPage = () => {
+        if (requestedIndexOfLastItem < requestedPlans.length) {
+            setRequestedCurrentPage(requestedCurrentPage + 1);
+        }
+    };
+
+    const preRequestedPage = () => {
+        if (requestedCurrentPage > 1) {
+            setRequestedCurrentPage(requestedCurrentPage - 1);
+        }
+    };
+
     const handleDelete = (id) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this workout plan?");
         if (!confirmDelete) return;
 
-        fetch(`http://localhost:3000/my-workout-plans/${id}`, {
+        fetch(`http://localhost:3000/plans/${id}`, {
             method: "DELETE",
         })
-            .then((res) => {
-                res.json();
-                window.location.reload();
-            })
+            .then((res) => res.json())
             .then((data) => {
-                if (data.acknowledged) {
-                    alert("Workout Plan Deleted Successfully!");
-                    setPlans(plans.filter((plan) => plan._id !== id));
-                }
+                console.log("Plan deleted successfully:", data);
+                // Remove the deleted plan from the UI
+                const updatedPlans = plans.filter((plan) => plan._id !== id);
+                setPlans(updatedPlans);
+                setFilteredPlans(updatedPlans);
             })
-            .catch((err) => {
-                console.error("Error deleting plan:", err);
-                alert("Failed to delete the workout plan. Please try again.");
-            });
+            .catch((err) => console.error("Error deleting plan:", err));
     };
 
     return (
@@ -158,20 +184,62 @@ const MyPlans = () => {
                             </table>
                         </div>
                     </div>
+                    <div className="flex justify-center text-black space-x-8 mt-4">
+                        {currentPage > 1 && (
+                            <button className="hover:underline" onClick={prePage}>
+                                Previous
+                            </button>
+                        )}
+                        {indexOfLastItem < filteredPlans.length && (
+                            <button className="hover:underline" onClick={nextPage}>
+                                Next
+                            </button>
+                        )}
+                    </div>
                 </div>
 
-                {/* Pagination Controls */}
-                <div className="flex justify-center text-black space-x-8 mt-4">
-                    {currentPage > 1 && (
-                        <button className="hover:underline" onClick={prePage}>
-                            Previous
-                        </button>
-                    )}
-                    {indexOfLastItem < filteredPlans.length && (
-                        <button className="hover:underline" onClick={nextPage}>
-                            Next
-                        </button>
-                    )}
+                {/* New table for requested plans */}
+                <div className="w-full xl:w-10/12 mx-auto mt-6">
+                    <div className="relative flex flex-col bg-white w-full mb-6 shadow-md rounded-lg">
+                        <div className="rounded-t px-4 py-3 border-b flex justify-between items-center">
+                            <h3 className="font-semibold text-lg">Requested Plans</h3>
+                        </div>
+
+                        <div className="block w-full overflow-x-auto">
+                            <table className="items-center bg-transparent w-full border-collapse">
+                                <thead>
+                                    <tr className="bg-gray-200">
+                                        <th className="px-6 py-3 text-xs uppercase font-semibold text-left">No:</th>
+                                        <th className="px-6 py-3 text-xs uppercase font-semibold text-left">Workout Name</th>
+                                        <th className="px-6 py-3 text-xs uppercase font-semibold text-left">Requested By</th>
+                                        <th className="px-6 py-3 text-xs uppercase font-semibold text-left">Goal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {currentRequestedPlans.map((plan, index) => (
+                                        <tr key={plan._id} className="border-b hover:bg-gray-100">
+                                            <td className="px-6 py-4 text-sm">{requestedIndexOfFirstItem + index + 1}</td>
+                                            <td className="px-6 py-4 text-sm">{plan.name}</td>
+                                            <td className="px-6 py-4 text-sm">{plan.email}</td>
+                                            <td className="px-6 py-4 text-sm">{plan.goal}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div className="flex justify-center text-black space-x-8 mt-4">
+                        {requestedCurrentPage > 1 && (
+                            <button className="hover:underline" onClick={preRequestedPage}>
+                                Previous
+                            </button>
+                        )}
+                        {requestedIndexOfLastItem < requestedPlans.length && (
+                            <button className="hover:underline" onClick={nextRequestedPage}>
+                                Next
+                            </button>
+                        )}
+                    </div>
                 </div>
             </section>
         </div>
