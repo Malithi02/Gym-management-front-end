@@ -71,7 +71,7 @@ const Home = () => {
             {/* Main Content Layout */}
             <div className="bg-[#FAFAFA] md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">
                 {/* Sidebar (Filters) */}
-                <div className="bg-#757f9a p-4 rounded col-span-1">
+                <div className="bg-bg-purple-100 p-4 rounded col-span-1">
                     <SideBar handleChange={handleChange} handleClick={handleClick} />
                 </div>
 
