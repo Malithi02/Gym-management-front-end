@@ -56,7 +56,7 @@ const CreatePlans = () => {
                 alert("Plan created successfully");
                 reset(); // Clear form after submission
                 setSelectedOption(null); // Clear selected equipment
-                window.location.href = "/my-workout-plans"; // Redirect to my workout plans page
+                window.location.href = "/trainer-dashboard"; // Redirect to my workout plans page
             })
             .catch((error) => {
                 console.error("Error creating plan:", error);

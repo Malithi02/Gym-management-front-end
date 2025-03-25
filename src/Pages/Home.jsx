@@ -71,14 +71,30 @@ const Home = () => {
             {/* Main Content Layout */}
             <div className="bg-[#FAFAFA] md:grid grid-cols-4 gap-8 lg:px-24 px-4 py-12">
                 {/* Sidebar (Filters) */}
-                <div className="bg-white p-4 rounded col-span-1">
+                <div className="bg-#757f9a p-4 rounded col-span-1">
                     <SideBar handleChange={handleChange} handleClick={handleClick} />
                 </div>
 
                 {/* Job Listings */}
                 <div className="col-span-2 bg-white p-4 rounded-sm">
-                    {isLoading ? <p>Loading..</p> : result.length > 0 ? <Jobs result={result} /> : <p>No Data Found</p>}
-                </div>
+          {/* Loading or results display */}
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              {/* Display number of available jobs after filtering */}
+              <h3>{result.length} Plans</h3>
+              
+              {/* Show jobs if available */}
+              {result.length > 0 ? (
+                <Jobs result={result} />
+              ) : (
+                <p>No Plans Available</p>
+              )}
+            </>
+          )}
+        </div>
+
 
                 {/* Extra Space (Right Side) */}
                 <div className="bg-white p-4 rounded col-span-1">
