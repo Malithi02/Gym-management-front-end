@@ -14,7 +14,7 @@ const MyPlans = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`http://localhost:3000/my-workout-plans/${email}`)
+        fetch(`http://localhost:3000/plans/email/${email}`)
             .then((res) => res.json())
             .then((data) => {
                 setPlans(data);
@@ -68,7 +68,7 @@ const MyPlans = () => {
         const confirmDelete = window.confirm("Are you sure you want to delete this workout plan?");
         if (!confirmDelete) return;
 
-        fetch(`http://localhost:3000/my-workout-plans/${id}`, {
+        fetch(`http://localhost:3000/plans/${id}`, {
             method: "DELETE",
         })
             .then((res) => {

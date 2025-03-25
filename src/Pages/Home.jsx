@@ -18,12 +18,13 @@ const Home = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch("http://localhost:3000/all-plans")
-            .then((res) => res.json())
-            .then((data) => {
+        fetch("http://localhost:3000/plans/").then((res) => {
+            res.json().then((data) => {
+                console.log(data);
                 setJobs(data);
                 setIsLoading(false);
             });
+        });
     }, []);
 
     // Handle search input change
