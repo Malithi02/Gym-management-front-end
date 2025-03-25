@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const MyPlans = () => {
     const [plans, setPlans] = useState([]);
@@ -15,13 +15,13 @@ const MyPlans = () => {
     useEffect(() => {
         setIsLoading(true);
         fetch(`http://localhost:3000/my-workout-plans/${email}`)
-            .then(res => res.json())
-            .then(data => {
+            .then((res) => res.json())
+            .then((data) => {
                 setPlans(data);
                 setFilteredPlans(data); // Store a copy for search functionality
                 setIsLoading(false);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error("Error fetching plans:", err);
                 setIsLoading(false);
             });
@@ -32,9 +32,7 @@ const MyPlans = () => {
         if (searchText.trim() === "") {
             setFilteredPlans(plans);
         } else {
-            const filtered = plans.filter((plan) =>
-                plan.workoutName.toLowerCase().includes(searchText.toLowerCase())
-            );
+            const filtered = plans.filter((plan) => plan.workoutName.toLowerCase().includes(searchText.toLowerCase()));
             setFilteredPlans(filtered);
         }
     };
@@ -66,27 +64,30 @@ const MyPlans = () => {
         if (!confirmDelete) return;
 
         fetch(`http://localhost:3000/my-workout-plans/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
         })
-            .then(res => res.json())
-            .then(data => {
+            .then((res) => {
+                res.json();
+                window.location.reload();
+            })
+            .then((data) => {
                 if (data.acknowledged) {
                     alert("Workout Plan Deleted Successfully!");
-                    setPlans(plans.filter(plan => plan._id !== id));
+                    setPlans(plans.filter((plan) => plan._id !== id));
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error("Error deleting plan:", err);
                 alert("Failed to delete the workout plan. Please try again.");
             });
     };
 
     return (
-        <div className='max-w-screen-2xl container mx-auto xl:px-24 px-4'>
-            <h1 className='text-center p-4 text-lg font-bold'>All My Plans</h1>
+        <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
+            <h1 className="text-center p-4 text-lg font-bold">All My Plans</h1>
 
             {/* Search Box */}
-            <div className='flex justify-center items-center gap-2 mb-4'>
+            <div className="flex justify-center items-center gap-2 mb-4">
                 <input
                     onChange={(e) => setSearchText(e.target.value)}
                     type="text"
@@ -94,7 +95,7 @@ const MyPlans = () => {
                     className="py-2 px-4 border border-gray-300 focus:outline-none w-2/5 bg-gray-100 rounded-md"
                 />
                 <button
-                    className='bg-gray-700 text-white font-semibold px-4 py-2 rounded-md'
+                    className="bg-gray-700 text-white font-semibold px-4 py-2 rounded-md"
                     onClick={handleSearch} // Trigger search on button click
                 >
                     Search
@@ -103,15 +104,13 @@ const MyPlans = () => {
 
             {isLoading ? <p>Loading...</p> : <p className="text-center mb-2">My Plans: {filteredPlans.length}</p>}
 
-            <section className='py-1'>
-                <div className='w-full xl:w-10/12 mx-auto mt-6'>
+            <section className="py-1">
+                <div className="w-full xl:w-10/12 mx-auto mt-6">
                     <div className="relative flex flex-col bg-white w-full mb-6 shadow-md rounded-lg">
                         <div className="rounded-t px-4 py-3 border-b flex justify-between items-center">
                             <h3 className="font-semibold text-lg">All Plans</h3>
                             <Link to="/postplans">
-                                <button className="bg-green-600 text-white text-xs font-bold uppercase px-4 py-2 rounded">
-                                    Post A New Plan
-                                </button>
+                                <button className="bg-green-600 text-white text-xs font-bold uppercase px-4 py-2 rounded">Post A New Plan</button>
                             </Link>
                         </div>
 
@@ -140,16 +139,11 @@ const MyPlans = () => {
                                             <td className="px-6 py-4 text-sm">{plan.trainerName}</td>
                                             <td className="px-6 py-4 text-sm">
                                                 <Link to={`/edit-plans/${plan._id}`}>
-                                                    <button className="bg-yellow-500 text-white px-4 py-1 rounded-md">
-                                                        Edit
-                                                    </button>
+                                                    <button className="bg-yellow-500 text-white px-4 py-1 rounded-md">Edit</button>
                                                 </Link>
                                             </td>
                                             <td className="px-6 py-4 text-sm">
-                                                <button
-                                                    className="bg-red-600 py-2 px-4 text-white rounded-md"
-                                                    onClick={() => handleDelete(plan._id)}
-                                                >
+                                                <button className="bg-red-600 py-2 px-4 text-white rounded-md" onClick={() => handleDelete(plan._id)}>
                                                     Delete
                                                 </button>
                                             </td>
@@ -162,12 +156,16 @@ const MyPlans = () => {
                 </div>
 
                 {/* Pagination Controls */}
-                <div className='flex justify-center text-black space-x-8 mt-4'>
+                <div className="flex justify-center text-black space-x-8 mt-4">
                     {currentPage > 1 && (
-                        <button className='hover:underline' onClick={prePage}>Previous</button>
+                        <button className="hover:underline" onClick={prePage}>
+                            Previous
+                        </button>
                     )}
                     {indexOfLastItem < filteredPlans.length && (
-                        <button className='hover:underline' onClick={nextPage}>Next</button>
+                        <button className="hover:underline" onClick={nextPage}>
+                            Next
+                        </button>
                     )}
                 </div>
             </section>
