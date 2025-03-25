@@ -90,7 +90,7 @@ const UpdatePlan = () => {
             .then(() => {
                 alert("Plan updated successfully");
                 reset();
-                window.location.href = "/my-workout-plans";
+                window.location.href = "/trainer-dashboard";
             })
             .catch((error) => {
                 console.error("Error updating plan:", error);

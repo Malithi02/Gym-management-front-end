@@ -65,8 +65,8 @@ const SessionType = ({ handleChange }) => {
         {/* Use correct capitalization for InputField */}
         <InputField handleChange={handleChange} value="Full-body" title="Full-body" name="sessionType"/>
         <InputField handleChange={handleChange} value="Upper-body" title="Upper-body" name="sessionType"/>
-        <InputField handleChange={handleChange} value="Cardio" title="Cardio" name="sessionType"/>
-        <InputField handleChange={handleChange} value="Yoga" title="Yoga" name="sessionType"/>
+        <InputField handleChange={handleChange} value="Abs" title="Abs" name="sessionType"/>
+        <InputField handleChange={handleChange} value="Flexibility" title="Flexibility" name="sessionType"/>
       </div>
     </div>
   );
