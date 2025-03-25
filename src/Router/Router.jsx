@@ -21,7 +21,7 @@ const router = createBrowserRouter([
             {
                 path: "/trainer-dashboard/edit-plans/:id",
                 element: <UpdatePlan />,
-                loader: ({ params }) => fetch(`http://localhost:3000/all-plans/${params.id}`),
+                loader: ({ params }) => fetch(`http://localhost:3000/plans/${params.id}`),
             },
             { path: "/plan/:id", element: <PlanDetails /> }, // ✅ Fixed route
             {

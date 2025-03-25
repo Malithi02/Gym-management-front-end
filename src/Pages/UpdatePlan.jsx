@@ -82,7 +82,7 @@ const UpdatePlan = () => {
 
         data.equipments = selectedOption.map((opt) => opt.value);
 
-        fetch(`http://localhost:3000/edit-plans/${id}`, {
+        fetch(`http://localhost:3000/plans/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
