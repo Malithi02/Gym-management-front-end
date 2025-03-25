@@ -27,19 +27,24 @@ const MyPlans = () => {
             });
     }, []);
 
-    // Filter plans when searching
-    const handleSearch = () => {
-        if (searchText.trim() === "") {
-            setFilteredPlans(plans);
-        } else {
-            const filtered = plans.filter((plan) => plan.workoutName.toLowerCase().includes(searchText.toLowerCase()));
-            setFilteredPlans(filtered);
-        }
-    };
-
     useEffect(() => {
+        // Filter plans when searching
+        const handleSearch = () => {
+            if (searchText.trim() === "") {
+                setFilteredPlans(plans);
+            } else {
+                const filtered = plans.filter((plan) => {
+                    // Search by workout name and trainer name
+                    return (
+                        plan.workoutName.toLowerCase().includes(searchText.toLowerCase()) ||
+                        plan.trainerName.toLowerCase().includes(searchText.toLowerCase())
+                    );
+                });
+                setFilteredPlans(filtered);
+            }
+        };
         handleSearch(); // Trigger search whenever searchText changes
-    }, [searchText]);
+    }, [plans, searchText]);
 
     // Pagination calculations
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -96,7 +101,7 @@ const MyPlans = () => {
                 />
                 <button
                     className="bg-gray-700 text-white font-semibold px-4 py-2 rounded-md"
-                    onClick={handleSearch} // Trigger search on button click
+                    // onClick={handleSearch} // Trigger search on button click
                 >
                     Search
                 </button>
@@ -109,7 +114,7 @@ const MyPlans = () => {
                     <div className="relative flex flex-col bg-white w-full mb-6 shadow-md rounded-lg">
                         <div className="rounded-t px-4 py-3 border-b flex justify-between items-center">
                             <h3 className="font-semibold text-lg">All Plans</h3>
-                            <Link to="/postplans">
+                            <Link to="/trainer-dashboard/postplans">
                                 <button className="bg-green-600 text-white text-xs font-bold uppercase px-4 py-2 rounded">Post A New Plan</button>
                             </Link>
                         </div>
@@ -138,7 +143,7 @@ const MyPlans = () => {
                                             <td className="px-6 py-4 text-sm">{plan.maxDuration}</td>
                                             <td className="px-6 py-4 text-sm">{plan.trainerName}</td>
                                             <td className="px-6 py-4 text-sm">
-                                                <Link to={`/edit-plans/${plan._id}`}>
+                                                <Link to={`/trainer-dashboard/edit-plans/${plan._id}`}>
                                                     <button className="bg-yellow-500 text-white px-4 py-1 rounded-md">Edit</button>
                                                 </Link>
                                             </td>
