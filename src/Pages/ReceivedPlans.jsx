@@ -5,12 +5,12 @@ const ReceivedPlans = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const userEmail = "placeholder@example.com"; // Replace with dynamic email when available
+    const userEmail = "snru@gm.com"; // Replace with dynamic email when available
 
     useEffect(() => {
         const fetchPlans = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/requests/received?email=${userEmail}`);
+                const response = await fetch(`http://localhost:3000/reply/${userEmail}`);
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
@@ -35,18 +35,33 @@ const ReceivedPlans = () => {
     }
 
     return (
-        <div>
-            <h1>Received Plans</h1>
+        <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+            <h1 style={{ textAlign: "center", color: "#333" }}>Received Plans</h1>
             {plans.length === 0 ? (
-                <p>No plans received yet.</p>
+                <p style={{ textAlign: "center", color: "#777" }}>No plans received yet.</p>
             ) : (
-                <ul>
+                <ul style={{ listStyleType: "none", padding: 0 }}>
                     {plans.map((plan) => (
-                        <li key={plan.id}>
-                            <h3>{plan.title}</h3>
-                            <p>{plan.description}</p>
-                            <p>
+                        <li
+                            key={plan.id}
+                            style={{
+                                border: "1px solid #ddd",
+                                borderRadius: "8px",
+                                padding: "15px",
+                                marginBottom: "10px",
+                                backgroundColor: "#f9f9f9",
+                            }}
+                        >
+                            <h3 style={{ margin: "0 0 10px", color: "#555" }}>{plan.title}</h3>
+                            <p style={{ margin: "5px 0", color: "#666" }}>{plan.description}</p>
+                            <p style={{ margin: "5px 0", color: "#666" }}>
                                 <strong>Trainer:</strong> {plan.trainerName}
+                            </p>
+                            <p style={{ margin: "5px 0", color: "#666" }}>
+                                <strong>Date:</strong> {plan.date}
+                            </p>
+                            <p style={{ margin: "5px 0", color: "#666" }}>
+                                <strong>Plan Details:</strong> {plan.replyMessage}
                             </p>
                         </li>
                     ))}

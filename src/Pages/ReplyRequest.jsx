@@ -5,6 +5,7 @@ const ReplyRequest = () => {
     const { id } = useParams(); // Get the id from URL parameters
     const [requestDetails, setRequestDetails] = useState(null);
     const [reply, setReply] = useState("");
+    const [trainerName, setTrainerName] = useState(""); // New state for trainer name
 
     useEffect(() => {
         // Fetch the request details using the id
@@ -22,22 +23,53 @@ const ReplyRequest = () => {
     }, [id]);
 
     const handleReplySubmit = async () => {
+        console.log(requestDetails.trainerName);
         try {
-            const response = await fetch(`/api/requests/${id}/reply`, {
+            const response = await fetch(`http://localhost:3000/reply`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ reply }),
+                body: JSON.stringify({
+                    userEmail: requestDetails.email,
+                    trainerName: trainerName, // Use the trainer name from input
+                    replyMessage: reply,
+                    date: new Date().toISOString(), // Ensure date is in ISO format
+                }),
             });
-            if (response.ok) {
-                alert("Reply sent successfully!");
-                setReply("");
-            } else {
-                alert("Failed to send reply.");
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error response from server:", errorData);
+                throw new Error(`Failed to send reply: ${response.statusText}`);
             }
+
+            const result = await response.json();
+            console.log("Reply sent successfully:", result);
+
+            // Update the status of the Reply model
+            const statusResponse = await fetch(`http://localhost:3000/requests/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    status: "Replied",
+                }),
+            });
+
+            if (!statusResponse.ok) {
+                const statusErrorData = await statusResponse.json();
+                console.error("Error updating reply status:", statusErrorData);
+                throw new Error(`Failed to update reply status: ${statusResponse.statusText}`);
+            }
+
+            console.log("Reply status updated successfully");
+            alert("Reply sent and status updated successfully!");
+            window.location.href = "/trainer-dashboard"; // Redirect to trainer dashboard
         } catch (error) {
             console.error("Error sending reply:", error);
+            alert("Failed to send reply. Please try again.");
         }
     };
 
@@ -73,6 +105,13 @@ const ReplyRequest = () => {
             )}
             <div className="bg-white p-4 rounded shadow">
                 <h2 className="text-xl font-semibold mb-4">Send a Reply</h2>
+                <input
+                    type="text"
+                    className="w-full p-2 border border-gray-300 rounded mb-4"
+                    value={trainerName}
+                    onChange={(e) => setTrainerName(e.target.value)}
+                    placeholder="Enter trainer name"
+                />
                 <textarea
                     className="w-full p-2 border border-gray-300 rounded mb-4"
                     value={reply}
