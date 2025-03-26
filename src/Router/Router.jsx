@@ -7,6 +7,8 @@ import MyPlans from "../Pages/MyPlans";
 import UpdatePlan from "../Pages/UpdatePlan";
 import PlanDetails from "../Pages/PlanDetails";
 import RequestPlan from "../Pages/RequestPlan";
+import ReplyRequest from "../Pages/ReplyRequest";
+import ReceivedPlans from "../Pages/ReceivedPlans";
 //import Login from "../"
 // ✅ Correct
 
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
             {
                 path: "/request-plan",
                 element: <RequestPlan />,
+            },
+            {
+                path: "/request-plan/:id",
+                element: <ReplyRequest />,
+            },
+            {
+                path: "/myplans",
+                element: <ReceivedPlans />,
             },
         ],
     },

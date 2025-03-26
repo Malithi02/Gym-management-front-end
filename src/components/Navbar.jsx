@@ -10,7 +10,7 @@ const Navbar = () => {
     const navItems = [
         { path: "/", title: "Start a Search" },
         { path: "/trainer-dashboard", title: " Trainer Dashboard" },
-        { path: "/progress", title: "Progress" },
+        { path: "/myplans", title: "My Plans" },
         { path: "/request-plan", title: "Request a plan" },
     ];
     return (

@@ -213,15 +213,24 @@ const MyPlans = () => {
                                         <th className="px-6 py-3 text-xs uppercase font-semibold text-left">Workout Name</th>
                                         <th className="px-6 py-3 text-xs uppercase font-semibold text-left">Requested By</th>
                                         <th className="px-6 py-3 text-xs uppercase font-semibold text-left">Goal</th>
+                                        <th className="px-6 py-3 text-xs uppercase font-semibold text-left">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {currentRequestedPlans.map((plan, index) => (
-                                        <tr key={plan._id} className="border-b hover:bg-gray-100">
+                                        <tr
+                                            key={plan._id}
+                                            className="border-b hover:bg-gray-100"
+                                            onClick={() => {
+                                                // redirect to the plan details page
+                                                window.location.href = `/request-plan/${plan._id}`;
+                                            }}
+                                        >
                                             <td className="px-6 py-4 text-sm">{requestedIndexOfFirstItem + index + 1}</td>
                                             <td className="px-6 py-4 text-sm">{plan.name}</td>
                                             <td className="px-6 py-4 text-sm">{plan.email}</td>
                                             <td className="px-6 py-4 text-sm">{plan.goal}</td>
+                                            <td className="px-6 py-4 text-sm">{plan.status}</td>
                                         </tr>
                                     ))}
                                 </tbody>
