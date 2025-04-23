@@ -44,7 +44,7 @@ const router = createBrowserRouter([
                 element: <ReceivedPlans />,
             },
             {
-                path:"/trainer-dashboard/mealplans/create",
+                path:"mealplans/create",
                 element:<CreateMealPlan/>,      },
 
               {

@@ -36,7 +36,7 @@ const MealPlans = () => {
             <MdOutlineAddBox className='text-sky-800 text-4xl' />
             </Link>
          </div>
-         {Loading ?(
+         {loading ?(
             <Spinner/>
          ) :(
             <table className='w-full border-separate border-spacing-2'>

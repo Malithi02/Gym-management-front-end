@@ -33,7 +33,7 @@ const CreateMealPlan = () => {
       };
       setLoading(true) ;
       axios
-      .post('http://localhost:3000/trainer-dashboard/mealplans',data)
+      .post('http://localhost:3000/mealplans/create',data)
       .then(() => {
         setLoading(false);
         navigate('/');
@@ -90,16 +90,8 @@ const CreateMealPlan = () => {
           className='border-2 border-gray-500 px-4 py-2 w-full'
           />
          </div>
-         <div className='my-4'>
-          <lable className = 'text-xl mr-4 text-gray-500'>  Plan Category</lable>
-
-          <input
-          type ='text'
-          value ={ planCategory}
-          onChange ={(e) => setCategory(e.target.value)}
-          className='border-2 border-gray-500 px-4 py-2 w-full'
-          />
-         </div>
+         
+        
          <div className='my-4'>
           <lable className = 'text-xl mr-4 text-gray-500'>   Meal Schedule</lable>
 
