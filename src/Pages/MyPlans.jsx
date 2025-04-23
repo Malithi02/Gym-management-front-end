@@ -131,6 +131,10 @@ const MyPlans = () => {
                 >
                     Search
                 </button>
+
+                <Link to="/trainer-dashboard/mealplans">
+                                <button className="bg-green-600 text-white text-xs font-bold uppercase px-4 py-2 rounded">Post A New Meal Plan</button>
+                            </Link>
             </div>
 
             {isLoading ? <p>Loading...</p> : <p className="text-center mb-2">My Plans: {filteredPlans.length}</p>}

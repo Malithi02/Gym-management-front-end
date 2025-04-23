@@ -9,6 +9,11 @@ import PlanDetails from "../Pages/PlanDetails";
 import RequestPlan from "../Pages/RequestPlan";
 import ReplyRequest from "../Pages/ReplyRequest";
 import ReceivedPlans from "../Pages/ReceivedPlans";
+import CreateMealPlan from "../Pages/CreateMealPlan";
+import DeleteMealPlan   from "../Pages/DeleteMealPlan";
+ import EditMealPlan from  "../Pages/EditMealPlan";
+ import ShowMealPlan from "../Pages/ShowMealPlan";
+import MealPlans from "../Pages/MealPlans";
 //import Login from "../"
 // ✅ Correct
 
@@ -37,6 +42,26 @@ const router = createBrowserRouter([
             {
                 path: "/myplans",
                 element: <ReceivedPlans />,
+            },
+            {
+                path:"/trainer-dashboard/mealplans/create",
+                element:<CreateMealPlan/>,      },
+
+              {
+                path:"/trainer-dashboard/mealplans/details/:id",
+                element:<ShowMealPlan/>,
+              } , 
+              {
+                path: "/trainer-dashboard/mealplans/edit/:id",
+                element:<EditMealPlan/>,
+            },
+            {
+                path: "/trainer-dashboard/mealplans/delete/:id",
+                element:<DeleteMealPlan/>,
+            },
+            {
+                path: "/trainer-dashboard/mealplans",
+                element:<MealPlans/>,
             },
         ],
     },
