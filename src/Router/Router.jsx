@@ -55,9 +55,14 @@ const router = createBrowserRouter([
                 path: "mealplans/edit/:id",
                 element:<EditMealPlan/>,
             },
-            {
+           /* {
                 path: "mealplans/delete/:id",
                 element:<DeleteMealPlan/>,
+            },*/
+            {
+                path: "mealplans/delete/:id",
+                element: <DeleteMealPlan />,
+               
             },
             {
                 path: "/trainer-dashboard/mealplans",

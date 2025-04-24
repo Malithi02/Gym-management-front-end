@@ -69,7 +69,7 @@ const MealPlans = () => {
                                         <Link to={`/mealplans/edit/${mealplan._id}`}>
                                             <AiOutlineEdit className="text-yellow-600" />
                                         </Link>
-                                        <Link to={`/mealplans/delete/${mealplan.id}`}>
+                                        <Link to={`/mealplans/delete/${mealplan._id}`}>
                                             <MdOutlineDelete className="text-red-600" />
                                         </Link>
                                     </td>
