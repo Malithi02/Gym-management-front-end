@@ -15,8 +15,10 @@ const ShowMealPlan = () => {
 
     useEffect(() => {
         setLoading(true);
-        axios
-        .get("http://localhost:3000/mealplans/details/${id}")
+       // axios
+        //.get("http://localhost:3000/mealplans/details/${id}")
+        //axios.get("http://localhost:3000/mealplans/details/${id}")
+        axios.get(`http://localhost:3000/mealplans/details/${id}`)
         .then((response) =>{
             setMealPlans(response.data);
             setLoading(false);
