@@ -69,7 +69,7 @@ const ShowMealPlan = () => {
                
                <div className='my-4'>
                <span className = 'text-xl mr-4 text-gray-500'>Calorie Target</span>
-               <span>{mealplan.caloriearget}</span>
+               <span>{mealplan.calorieTarget}</span>
                </div>
 
                <div className='my-4'>
