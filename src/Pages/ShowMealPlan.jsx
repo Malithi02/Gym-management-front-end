@@ -16,7 +16,7 @@ const ShowMealPlan = () => {
     useEffect(() => {
         setLoading(true);
         axios
-        .get(`http://localhost:3000/trainer-dashboard/mealplans/${id}`)
+        .get("http://localhost:3000/mealplans/details/${id}")
         .then((response) =>{
             setMealPlans(response.data);
             setLoading(false);
@@ -52,7 +52,7 @@ const ShowMealPlan = () => {
             
                <div className='my-4'>
                <span className = 'text-xl mr-4 text-gray-500'>Plan Type</span>
-               <span>{book.planType}</span>
+               <span>{mealplan.planType}</span>
                </div>
 
                <div className='my-4'>
@@ -77,11 +77,11 @@ const ShowMealPlan = () => {
                
                <div className='my-4'>
                <span className = 'text-xl mr-4 text-gray-500'>Created Date</span>
-               <span>{new Date (book.createdAt).toString()}</span>
+               <span>{new Date (mealplan.createdAt).toString()}</span>
                </div>
                <div className='my-4'>
                <span className = 'text-xl mr-4 text-gray-500'>Last Update Time</span>
-               <span>{new Date (book.updatedAt).toString()}</span>
+               <span>{new Date (mealplan.updatedAt).toString()}</span>
                </div>
              </div>
           )}

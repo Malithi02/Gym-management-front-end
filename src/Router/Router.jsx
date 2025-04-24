@@ -48,15 +48,15 @@ const router = createBrowserRouter([
                 element:<CreateMealPlan/>,      },
 
               {
-                path:"/trainer-dashboard/mealplans/details/:id",
+                path:"mealplans/details/:id",
                 element:<ShowMealPlan/>,
               } , 
               {
-                path: "/trainer-dashboard/mealplans/edit/:id",
+                path: "mealplans/edit/:id",
                 element:<EditMealPlan/>,
             },
             {
-                path: "/trainer-dashboard/mealplans/delete/:id",
+                path: "mealplans/delete/:id",
                 element:<DeleteMealPlan/>,
             },
             {

@@ -38,6 +38,7 @@ const MealPlans = () => {
                     <table className="w-full border-separate border-spacing-2">
                         <thead>
                             <tr>
+                               <th className="border border-slate-600 rounded-md">Number</th>
                                 <th className="border border-slate-600 rounded-md">plan Name</th>
                                 <th className="border border-slate-600 rounded-md">Plan category</th>
                                 <th className="border border-slate-600 rounded-md">Plan Type</th>
