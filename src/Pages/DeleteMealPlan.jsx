@@ -15,7 +15,7 @@ const DeleteMealPlan =() => {
     .delete(`http://localhost:3000/mealplans/delete/${id}`)
     .then(() => {
       setLoading(false) 
-      navigate('/');
+      navigate('/trainer-dashboard/mealplans');
 
 
     })

@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../Pages/Home";
-import About from "../Pages/About";
 import CreatePlans from "../Pages/CreatePlans";
 import MyPlans from "../Pages/MyPlans";
 import UpdatePlan from "../Pages/UpdatePlan";
@@ -10,10 +9,12 @@ import RequestPlan from "../Pages/RequestPlan";
 import ReplyRequest from "../Pages/ReplyRequest";
 import ReceivedPlans from "../Pages/ReceivedPlans";
 import CreateMealPlan from "../Pages/CreateMealPlan";
-import DeleteMealPlan   from "../Pages/DeleteMealPlan";
- import EditMealPlan from  "../Pages/EditMealPlan";
- import ShowMealPlan from "../Pages/ShowMealPlan";
+import DeleteMealPlan from "../Pages/DeleteMealPlan";
+import EditMealPlan from "../Pages/EditMealPlan";
+import ShowMealPlan from "../Pages/ShowMealPlan";
 import MealPlans from "../Pages/MealPlans";
+import ProgressAnalysis from "../Pages/ProgressAnalysis";
+import SubmitProgress from "../Pages/SubmitProgress";
 //import Login from "../"
 // ✅ Correct
 
@@ -44,30 +45,75 @@ const router = createBrowserRouter([
                 element: <ReceivedPlans />,
             },
             {
-                path:"mealplans/create",
-                element:<CreateMealPlan/>,      },
+                path: "/progress-analysis",
+                element: <ProgressAnalysis />,
+                loader: async ({ request }) => {
+                    const url = new URL(request.url);
+                    const planId = url.searchParams.get("planId");
+                    
+                    if (!planId) {
+                        throw new Error("Plan ID is required");
+                    }
 
-              {
-                path:"mealplans/details/:id",
-                element:<ShowMealPlan/>,
-              } , 
-              {
-                path: "mealplans/edit/:id",
-                element:<EditMealPlan/>,
+                    try {
+                        // Fetch plan details
+                        const planResponse = await fetch(`http://localhost:3000/plans/${planId}`);
+                        const planData = await planResponse.json();
+
+                        // Fetch progress data
+                        const progressResponse = await fetch(`http://localhost:3000/progress/${planId}`);
+                        const progressData = await progressResponse.json();
+
+                        // Fetch workout distribution
+                        const distributionResponse = await fetch(`http://localhost:3000/workout-distribution/${planId}`);
+                        const distributionData = await distributionResponse.json();
+
+                        // Fetch recommendations
+                        const recommendationsResponse = await fetch(`http://localhost:3000/recommendations/${planId}`);
+                        const recommendationsData = await recommendationsResponse.json();
+
+                        return {
+                            plan: planData,
+                            progress: progressData,
+                            distribution: distributionData,
+                            recommendations: recommendationsData
+                        };
+                    } catch (error) {
+                        console.error("Error loading progress data:", error);
+                        throw new Error("Failed to load progress data");
+                    }
+                }
             },
-           /* {
-                path: "mealplans/delete/:id",
-                element:<DeleteMealPlan/>,
-            },*/
+            {
+                path: "mealplans/create",
+                element: <CreateMealPlan />,
+            },
+            {
+                path: "mealplans/details/:id",
+                element: <ShowMealPlan />,
+            },
+            {
+                path: "mealplans/edit/:id",
+                element: <EditMealPlan />,
+            },
             {
                 path: "mealplans/delete/:id",
                 element: <DeleteMealPlan />,
-               
             },
             {
                 path: "/trainer-dashboard/mealplans",
-                element:<MealPlans/>,
+                element: <MealPlans />,
             },
+            {
+                path: "/submit-progress",
+                element: <SubmitProgress />,
+            },
+            {
+                path: "/submit-progress/email/:email",
+                element: <SubmitProgress />,
+            },
+          
+
         ],
     },
 ]);

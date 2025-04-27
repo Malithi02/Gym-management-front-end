@@ -74,7 +74,7 @@ const Card = ({ data }) => {
 
     return (
         <section className="card" style={{
-            background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4)', // Eye-catching gradient
+            background: 'linear-gradient(45deg, #e96443, #904e95)', // Dark orange to purple gradient
             padding: '2px', // Creates the gradient border effect
             borderRadius: '8px', // Rounded corners
             margin: '1rem' // Space between cards

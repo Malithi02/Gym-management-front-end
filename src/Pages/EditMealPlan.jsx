@@ -61,7 +61,7 @@ const EditMealPlan = () => {
             .then((response) => {
                 console.log("Response from server:", response.data);
                 setLoading(false);
-                navigate("/");
+                navigate("/trainer-dashboard/mealplans");
             })
             .catch((error) => {
                 setLoading(false);
