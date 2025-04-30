@@ -45,7 +45,7 @@ const RequestPlan = () => {
                 console.log("Request submitted:", data);
                 alert("Request submitted successfully!");
                 reset();
-                window.location.href = "/trainer/dashboard";
+                window.location.href = "/trainer";
             })
             .catch((err) => {
                 console.error("Error submitting request:", err);

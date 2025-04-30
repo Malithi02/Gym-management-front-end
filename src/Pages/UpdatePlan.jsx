@@ -88,21 +88,26 @@ const UpdatePlan = () => {
         formState: { errors },
     } = useForm({
         resolver: yupResolver(planSchema),
-        defaultValues: {
-            workoutName: planData.workoutName,
-            trainerName: planData.trainerName,
-            maxDuration: planData.maxDuration,
-            minDuration: planData.minDuration,
-            durationType: planData.durationType,
-            difficultyLevel: planData.difficultyLevel,
-            postedDate: planData.postedDate ? new Date(planData.postedDate).toISOString().split("T")[0] : "",
-            workoutLogo: planData.workoutLogo,
-            description: planData.description,
-            postedBy: planData.postedBy,
-            workoutType: planData.workoutType,
-            sessionType: planData.sessionType,
-        },
     });
+
+    useEffect(() => {
+        if (planData) {
+            reset({
+                workoutName: planData.workoutName,
+                trainerName: planData.trainerName,
+                maxDuration: planData.maxDuration,
+                minDuration: planData.minDuration,
+                durationType: planData.durationType,
+                difficultyLevel: planData.difficultyLevel,
+                postedDate: planData.postedDate ? new Date(planData.postedDate).toISOString().split("T")[0] : "",
+                workoutLogo: planData.workoutLogo,
+                description: planData.description,
+                postedBy: planData.postedBy,
+                workoutType: planData.workoutType,
+                sessionType: planData.sessionType,
+            });
+        }
+    }, [planData, reset]);
 
     const onSubmit = (data) => {
         if (!selectedOption || selectedOption.length === 0) {
