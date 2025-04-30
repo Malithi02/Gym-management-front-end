@@ -260,7 +260,7 @@ const ReceivedPlans = () => {
 
     const handleProgressSubmit = async (planId) => {
         try {
-            navigate(`/submit-progress?email=${userEmail}`);
+            navigate(`/trainer/submit-progress?email=${userEmail}`);
         } catch (error) {
             console.error("Error:", error);
             alert("Failed to proceed. Please try again.");
