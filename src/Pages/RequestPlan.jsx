@@ -6,35 +6,34 @@ import { Link } from "react-router-dom";
 
 // Validation schema
 const requestSchema = yup.object({
-    name: yup.string()
-        .required("Name is required")
-        .min(2, "Name must be at least 2 characters")
-        .max(50, "Name must not exceed 50 characters"),
-    email: yup.string()
-        .required("Email is required")
-        .email("Invalid email format"),
-    phone: yup.string()
+    name: yup.string().required("Name is required").min(2, "Name must be at least 2 characters").max(50, "Name must not exceed 50 characters"),
+    email: yup.string().required("Email is required").email("Invalid email format"),
+    phone: yup
+        .string()
         .required("Phone number is required")
         .matches(/^[0-9]{10}$/, "Phone number must be 10 digits"),
-    goal: yup.string()
+    goal: yup
+        .string()
         .required("Fitness goal is required")
         .min(10, "Goal must be at least 10 characters")
         .max(200, "Goal must not exceed 200 characters"),
-    preferredDays: yup.string()
-        .required("Preferred workout days are required")
-        .min(3, "Please specify at least one day"),
-    additionalInfo: yup.string()
-        .max(500, "Additional information must not exceed 500 characters")
+    preferredDays: yup.string().required("Preferred workout days are required").min(3, "Please specify at least one day"),
+    additionalInfo: yup.string().max(500, "Additional information must not exceed 500 characters"),
 });
 
 const RequestPlan = () => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
-        resolver: yupResolver(requestSchema)
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(requestSchema),
     });
 
     const onSubmit = (data) => {
         // Send form data to the server
-        fetch("http://localhost:3000/requests/", {
+        fetch("http://localhost:4000/api/requests/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -46,7 +45,7 @@ const RequestPlan = () => {
                 console.log("Request submitted:", data);
                 alert("Request submitted successfully!");
                 reset();
-                window.location.href = "/";
+                window.location.href = "/trainer/dashboard";
             })
             .catch((err) => {
                 console.error("Error submitting request:", err);
@@ -55,25 +54,26 @@ const RequestPlan = () => {
     };
 
     return (
-        <div 
+        <div
             className="min-h-screen bg-cover bg-center bg-fixed"
             style={{
-                backgroundImage: "url('/images/sven-mieke-Lx_GDv7VA9M-unsplash.jpg')"
+                backgroundImage: "url('/images/sven-mieke-Lx_GDv7VA9M-unsplash.jpg')",
             }}
         >
             <div className="absolute inset-0 bg-black/60"></div>
-            
+
             <div className="relative z-10 min-h-screen flex items-center justify-center py-12 px-4">
                 <div className="max-w-4xl w-full">
                     <div className="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl overflow-hidden border border-white/20">
                         <div className="p-8">
                             <div className="flex justify-between items-center mb-8">
-                                <Link 
-                                    to="/" 
-                                    className="text-white hover:text-orange-400 transition duration-300 flex items-center"
-                                >
+                                <Link to="/trainer/dashboard" className="text-white hover:text-orange-400 transition duration-300 flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                                            clipRule="evenodd"
+                                        />
                                     </svg>
                                     Back to Home
                                 </Link>
@@ -95,9 +95,7 @@ const RequestPlan = () => {
                                             } rounded-lg shadow-sm bg-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
                                             placeholder="Enter your name"
                                         />
-                                        {errors.name && (
-                                            <p className="mt-1 text-sm text-red-400">{errors.name.message}</p>
-                                        )}
+                                        {errors.name && <p className="mt-1 text-sm text-red-400">{errors.name.message}</p>}
                                     </div>
 
                                     <div>
@@ -113,9 +111,7 @@ const RequestPlan = () => {
                                             } rounded-lg shadow-sm bg-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
                                             placeholder="Enter your email"
                                         />
-                                        {errors.email && (
-                                            <p className="mt-1 text-sm text-red-400">{errors.email.message}</p>
-                                        )}
+                                        {errors.email && <p className="mt-1 text-sm text-red-400">{errors.email.message}</p>}
                                     </div>
 
                                     <div>
@@ -131,9 +127,7 @@ const RequestPlan = () => {
                                                 errors.phone ? "border-red-500" : "border-white/30"
                                             } rounded-lg shadow-sm bg-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
                                         />
-                                        {errors.phone && (
-                                            <p className="mt-1 text-sm text-red-400">{errors.phone.message}</p>
-                                        )}
+                                        {errors.phone && <p className="mt-1 text-sm text-red-400">{errors.phone.message}</p>}
                                     </div>
 
                                     <div>
@@ -149,9 +143,7 @@ const RequestPlan = () => {
                                                 errors.preferredDays ? "border-red-500" : "border-white/30"
                                             } rounded-lg shadow-sm bg-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
                                         />
-                                        {errors.preferredDays && (
-                                            <p className="mt-1 text-sm text-red-400">{errors.preferredDays.message}</p>
-                                        )}
+                                        {errors.preferredDays && <p className="mt-1 text-sm text-red-400">{errors.preferredDays.message}</p>}
                                     </div>
                                 </div>
 
@@ -168,9 +160,7 @@ const RequestPlan = () => {
                                         } rounded-lg shadow-sm bg-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
                                         placeholder="Describe your fitness goals"
                                     />
-                                    {errors.goal && (
-                                        <p className="mt-1 text-sm text-red-400">{errors.goal.message}</p>
-                                    )}
+                                    {errors.goal && <p className="mt-1 text-sm text-red-400">{errors.goal.message}</p>}
                                 </div>
 
                                 <div>
@@ -186,9 +176,7 @@ const RequestPlan = () => {
                                         } rounded-lg shadow-sm bg-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
                                         placeholder="Any additional information you'd like to share"
                                     ></textarea>
-                                    {errors.additionalInfo && (
-                                        <p className="mt-1 text-sm text-red-400">{errors.additionalInfo.message}</p>
-                                    )}
+                                    {errors.additionalInfo && <p className="mt-1 text-sm text-red-400">{errors.additionalInfo.message}</p>}
                                 </div>
 
                                 <div className="flex justify-center">

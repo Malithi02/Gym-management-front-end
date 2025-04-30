@@ -22,7 +22,7 @@ const MyPlans = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`http://localhost:3000/plans`)
+        fetch(`http://localhost:4000/api/plans`)
             .then((res) => res.json())
             .then((data) => {
                 setPlans(data);
@@ -37,7 +37,7 @@ const MyPlans = () => {
 
     useEffect(() => {
         // Fetch requested plans
-        fetch(`http://localhost:3000/requests`)
+        fetch(`http://localhost:4000/api/requests`)
             .then((res) => res.json())
             .then((data) => {
                 setRequestedPlans(data);
@@ -46,7 +46,7 @@ const MyPlans = () => {
     }, []);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/progress`)
+        fetch(`http://localhost:4000/api/progress`)
             .then((res) => res.json())
             .then((data) => {
                 setProgressData(data);
@@ -113,7 +113,7 @@ const MyPlans = () => {
         const confirmDelete = window.confirm("Are you sure you want to delete this workout plan?");
         if (!confirmDelete) return;
 
-        fetch(`http://localhost:3000/plans/${id}`, {
+        fetch(`http://localhost:4000/api/plans/${id}`, {
             method: "DELETE",
         })
             .then((res) => res.json())
@@ -130,7 +130,7 @@ const MyPlans = () => {
     const handleDeleteProgress = async (id) => {
         if (window.confirm("Are you sure you want to delete this progress entry?")) {
             try {
-                const response = await fetch(`http://localhost:3000/progress/delete/${id}`, {
+                const response = await fetch(`http://localhost:4000/api/progress/delete/${id}`, {
                     method: "DELETE",
                 });
 
@@ -139,7 +139,7 @@ const MyPlans = () => {
                 }
 
                 // Refresh the progress data after successful deletion
-                const updatedProgress = progressData.filter(progress => progress._id !== id);
+                const updatedProgress = progressData.filter((progress) => progress._id !== id);
                 setProgressData(updatedProgress);
             } catch (error) {
                 console.error("Error deleting progress:", error);
@@ -150,30 +150,30 @@ const MyPlans = () => {
 
     const downloadProgressPDF = (progress) => {
         const doc = new jsPDF();
-        
+
         // Add title
         doc.setFontSize(16);
         doc.text("Progress Details", 14, 15);
-        
+
         // Add client information
         doc.setFontSize(12);
         doc.text(`Client Email: ${progress.userEmail}`, 14, 25);
         doc.text(`Date: ${new Date(progress.date).toLocaleDateString()}`, 14, 35);
-        
+
         // Add progress details
         doc.setFontSize(10);
         doc.text(`Weight: ${progress.weight} kg`, 14, 45);
         doc.text(`Measurements: ${progress.measurements}`, 14, 55);
         doc.text(`Completed Workouts: ${progress.completedWorkouts}`, 14, 65);
-        
+
         if (progress.notes) {
             doc.text(`Notes: ${progress.notes}`, 14, 75);
         }
-        
+
         // Add generation date
         doc.setFontSize(8);
         doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 85);
-        
+
         // Save the PDF
         doc.save(`progress-${progress.userEmail}-${new Date(progress.date).toLocaleDateString()}.pdf`);
     };
@@ -190,13 +190,9 @@ const MyPlans = () => {
                     placeholder="Search workout plans"
                     className="py-2 px-4 border border-gray-300 focus:outline-none w-2/5 bg-gray-100 rounded-md"
                 />
-                <button
-                    className="bg-gray-700 text-white font-semibold px-4 py-2 rounded-md"
-                >
-                    Search
-                </button>
+                <button className="bg-gray-700 text-white font-semibold px-4 py-2 rounded-md">Search</button>
 
-                <Link to="/trainer-dashboard/mealplans">
+                <Link to="/trainer/dashboard/mealplans">
                     <button className="bg-green-600 text-white text-xs font-bold uppercase px-4 py-2 rounded">Post A New Meal Plan</button>
                 </Link>
             </div>
@@ -208,7 +204,7 @@ const MyPlans = () => {
                     <div className="relative flex flex-col bg-white w-full mb-6 shadow-md rounded-lg">
                         <div className="rounded-t px-4 py-3 border-b flex justify-between items-center">
                             <h3 className="font-semibold text-lg">All Plans</h3>
-                            <Link to="/trainer-dashboard/postplans">
+                            <Link to="/trainer/dashboard/postplans">
                                 <button className="bg-green-600 text-white text-xs font-bold uppercase px-4 py-2 rounded">Post A New Plan</button>
                             </Link>
                         </div>
@@ -237,7 +233,7 @@ const MyPlans = () => {
                                             <td className="px-6 py-4 text-sm">{plan.maxDuration}</td>
                                             <td className="px-6 py-4 text-sm">{plan.trainerName}</td>
                                             <td className="px-6 py-4 text-sm">
-                                                <Link to={`/trainer-dashboard/edit-plans/${plan._id}`}>
+                                                <Link to={`/trainer/dashboard/edit-plans/${plan._id}`}>
                                                     <button className="bg-yellow-500 text-white px-4 py-1 rounded-md">Edit</button>
                                                 </Link>
                                             </td>
@@ -326,15 +322,15 @@ const MyPlans = () => {
                             <h3 className="font-bold text-xl text-gray-800">Submitted Progress Details</h3>
                         </div>
                         {deleteError && (
-                            <Alert 
-                                severity="error" 
-                                sx={{ 
-                                    mx: 4, 
-                                    mt: 2, 
+                            <Alert
+                                severity="error"
+                                sx={{
+                                    mx: 4,
+                                    mt: 2,
                                     borderRadius: 2,
-                                    '& .MuiAlert-icon': {
-                                        color: '#ef4444'
-                                    }
+                                    "& .MuiAlert-icon": {
+                                        color: "#ef4444",
+                                    },
                                 }}
                             >
                                 {deleteError}
@@ -345,59 +341,70 @@ const MyPlans = () => {
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
                                         <tr>
-                                            <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[5%]">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[5%]"
+                                            >
                                                 No.
                                             </th>
-                                            <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[15%]">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[15%]"
+                                            >
                                                 Client Email
                                             </th>
-                                            <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[10%]">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[10%]"
+                                            >
                                                 Date
                                             </th>
-                                            <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[10%]">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[10%]"
+                                            >
                                                 Weight
                                             </th>
-                                            <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[20%]">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[20%]"
+                                            >
                                                 Measurements
                                             </th>
-                                            <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[15%]">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[15%]"
+                                            >
                                                 Completed Workouts
                                             </th>
-                                            <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[15%]">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[15%]"
+                                            >
                                                 Notes
                                             </th>
-                                            <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[10%]">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-[10%]"
+                                            >
                                                 Actions
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {progressData.map((progress, index) => (
-                                            <tr 
-                                                key={progress._id} 
-                                                className="transition-colors hover:bg-gray-50"
-                                            >
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                    {index + 1}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                    {progress.userEmail}
-                                                </td>
+                                            <tr key={progress._id} className="transition-colors hover:bg-gray-50">
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{index + 1}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{progress.userEmail}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                                     {new Date(progress.date).toLocaleDateString()}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                                     <span className="font-medium">{progress.weight}</span> kg
                                                 </td>
-                                                <td className="px-6 py-4 text-sm text-gray-700">
-                                                    {progress.measurements}
-                                                </td>
-                                                <td className="px-6 py-4 text-sm text-gray-700">
-                                                    {progress.completedWorkouts}
-                                                </td>
-                                                <td className="px-6 py-4 text-sm text-gray-700">
-                                                    {progress.notes || '-'}
-                                                </td>
+                                                <td className="px-6 py-4 text-sm text-gray-700">{progress.measurements}</td>
+                                                <td className="px-6 py-4 text-sm text-gray-700">{progress.completedWorkouts}</td>
+                                                <td className="px-6 py-4 text-sm text-gray-700">{progress.notes || "-"}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                                                     <div className="flex items-center space-x-3">
                                                         <button
@@ -405,8 +412,19 @@ const MyPlans = () => {
                                                             className="text-red-600 hover:text-red-800 transition-colors duration-200"
                                                             title="Delete Progress"
                                                         >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                className="h-5 w-5"
+                                                                fill="none"
+                                                                viewBox="0 0 24 24"
+                                                                stroke="currentColor"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth={2}
+                                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                                />
                                                             </svg>
                                                         </button>
                                                         <button
@@ -414,8 +432,19 @@ const MyPlans = () => {
                                                             className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
                                                             title="Download Progress Details"
                                                         >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                className="h-5 w-5"
+                                                                fill="none"
+                                                                viewBox="0 0 24 24"
+                                                                stroke="currentColor"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth={2}
+                                                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                                                />
                                                             </svg>
                                                         </button>
                                                     </div>

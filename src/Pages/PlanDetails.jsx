@@ -9,7 +9,7 @@ const PlanDetails = () => {
     const [plan, setPlan] = useState({}); // Initialize as an empty object
 
     useEffect(() => {
-        fetch(`http://localhost:3000/plans/${id}`)
+        fetch(`http://localhost:4000/api/plans/${id}`)
             .then((res) => res.json())
             .then((data) => setPlan(data))
             .catch((error) => console.error("Error fetching plan:", error));

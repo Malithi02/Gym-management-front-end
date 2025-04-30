@@ -16,7 +16,7 @@ const Home = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch("http://localhost:3000/plans/").then((res) => {
+        fetch("http://localhost:4000/api/plans/").then((res) => {
             res.json().then((data) => {
                 console.log(data);
                 setJobs(data);
@@ -98,7 +98,7 @@ const Home = () => {
                                     Showing {Math.min(result.length, itemsPerPage)} of {result.length} plans
                                 </div>
                             </div>
-                            
+
                             {isLoading ? (
                                 <div className="flex justify-center items-center h-64">
                                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>

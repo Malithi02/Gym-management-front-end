@@ -1,9 +1,9 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 //import { useParams } from 'react-router-dom';
 import MealButton from "../components/MealButton";
 import Spinner from "../components/Spinner";
-import { useNavigate ,useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EditMealPlan = () => {
     const [planName, setName] = useState("");
@@ -21,23 +21,25 @@ const EditMealPlan = () => {
     const { id } = useParams();
     useEffect(() => {
         setLoading(true);
-        axios.get(`http://localhost:3000/mealplans/details/${id}`)
-        .then((response) => {
-            setName(response.data.planName);
-            setCategory(response.data.planCategory);
-            setType(response.data.planType);
-            setnutritionGoal(response.data.nutritionGoals);
-            setSchedule(response.data.mealSchedule);
-            setCalorieT(response.data.calorieTarget);
-            setHydration(response.data.hydration);
-            setSupplements(response.data.supplements);
-            setLoading(false);
-        }).catch((error) => { 
-            setLoading(false);
-            alert('An error happend.Please check console');
-            console.log(error);
-        });
-    },[])
+        axios
+            .get(`http://localhost:4000/api/mealplans/details/${id}`)
+            .then((response) => {
+                setName(response.data.planName);
+                setCategory(response.data.planCategory);
+                setType(response.data.planType);
+                setnutritionGoal(response.data.nutritionGoals);
+                setSchedule(response.data.mealSchedule);
+                setCalorieT(response.data.calorieTarget);
+                setHydration(response.data.hydration);
+                setSupplements(response.data.supplements);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setLoading(false);
+                alert("An error happend.Please check console");
+                console.log(error);
+            });
+    }, []);
 
     const handleEditMealPlan = () => {
         const data = {
@@ -54,14 +56,11 @@ const EditMealPlan = () => {
         console.log("Sending data to backend:", data);
         setLoading(true);
         axios
-           // .put(`http://localhost:3000/mealplans/${id}`, data)
-            //  .put(`http://localhost:3000/mealplans/${id}`, data)
-            .put(`http://localhost:3000/mealplans/edit/${id}`, data)
-
+            .put(`http://localhost:4000/api/mealplans/edit/${id}`, data)
             .then((response) => {
                 console.log("Response from server:", response.data);
                 setLoading(false);
-                navigate("/trainer-dashboard/mealplans");
+                navigate("/trainer/dashboard/mealplans");
             })
             .catch((error) => {
                 setLoading(false);
@@ -76,7 +75,7 @@ const EditMealPlan = () => {
             <h1 className="text-3xl my-4"> Edit Meal Plan</h1>
             <div className="flex  flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto">
                 <div className="my-4">
-                <label className="text-xl mr-4 text-gray-500"> Plan Name</label>
+                    <label className="text-xl mr-4 text-gray-500"> Plan Name</label>
 
                     <input
                         type="text"
@@ -165,4 +164,3 @@ const EditMealPlan = () => {
 };
 
 export default EditMealPlan;
-

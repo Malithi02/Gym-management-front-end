@@ -1,5 +1,5 @@
-import { useLoaderData, useParams } from "react-router-dom";
-import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -32,24 +32,53 @@ const planSchema = yup.object({
 
 const UpdatePlan = () => {
     const { id } = useParams();
-    const {
-        _id,
-        workoutName = "",
-        trainerName = "",
-        maxDuration = "",
-        minDuration = "",
-        durationType = "",
-        difficultyLevel = "",
-        postedDate = "",
-        workoutLogo = "",
-        description = "",
-        postedBy = "",
-        equipments = [],
-        workoutType = "",
-        sessionType = "",
-    } = useLoaderData() || {};
+    const [planData, setPlanData] = useState({
+        workoutName: "",
+        trainerName: "",
+        maxDuration: "",
+        minDuration: "",
+        durationType: "",
+        difficultyLevel: "",
+        postedDate: "",
+        workoutLogo: "",
+        description: "",
+        postedBy: "",
+        equipments: [],
+        workoutType: "",
+        sessionType: "",
+    });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const [selectedOption, setSelectedOption] = useState(equipments.map((eq) => ({ value: eq, label: eq })));
+    useEffect(() => {
+        const fetchPlanData = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch(`http://localhost:4000/api/plans/${id}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch plan data");
+                }
+                const data = await response.json();
+                setPlanData(data);
+                setError(null);
+            } catch (error) {
+                console.error("Error fetching plan data:", error);
+                setError("Failed to load plan data. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPlanData();
+    }, [id]);
+
+    const [selectedOption, setSelectedOption] = useState([]);
+
+    useEffect(() => {
+        if (planData.equipments && planData.equipments.length > 0) {
+            setSelectedOption(planData.equipments.map((eq) => ({ value: eq, label: eq })));
+        }
+    }, [planData.equipments]);
 
     const {
         register,
@@ -59,18 +88,18 @@ const UpdatePlan = () => {
     } = useForm({
         resolver: yupResolver(planSchema),
         defaultValues: {
-            workoutName,
-            trainerName,
-            maxDuration,
-            minDuration,
-            durationType,
-            difficultyLevel,
-            postedDate: postedDate ? new Date(postedDate).toISOString().split("T")[0] : "",
-            workoutLogo,
-            description,
-            postedBy,
-            workoutType,
-            sessionType,
+            workoutName: planData.workoutName,
+            trainerName: planData.trainerName,
+            maxDuration: planData.maxDuration,
+            minDuration: planData.minDuration,
+            durationType: planData.durationType,
+            difficultyLevel: planData.difficultyLevel,
+            postedDate: planData.postedDate ? new Date(planData.postedDate).toISOString().split("T")[0] : "",
+            workoutLogo: planData.workoutLogo,
+            description: planData.description,
+            postedBy: planData.postedBy,
+            workoutType: planData.workoutType,
+            sessionType: planData.sessionType,
         },
     });
 
@@ -82,7 +111,7 @@ const UpdatePlan = () => {
 
         data.equipments = selectedOption.map((opt) => opt.value);
 
-        fetch(`http://localhost:3000/plans/${id}`, {
+        fetch(`http://localhost:4000/api/plans/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
@@ -90,7 +119,7 @@ const UpdatePlan = () => {
             .then(() => {
                 alert("Plan updated successfully");
                 reset();
-                window.location.href = "/trainer-dashboard";
+                window.location.href = "/trainer/dashboard";
             })
             .catch((error) => {
                 console.error("Error updating plan:", error);
@@ -107,6 +136,22 @@ const UpdatePlan = () => {
         { value: "MedicineBall", label: "Medicine Ball" },
         { value: "RowingMachine", label: "Rowing Machine" },
     ];
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="text-xl">Loading...</div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="text-xl text-red-500">{error}</div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">

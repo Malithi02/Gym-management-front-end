@@ -34,11 +34,11 @@ const CreateMealPlan = () => {
         console.log("Sending data to backend:", data);
         setLoading(true);
         axios
-            .post("http://localhost:3000/mealplans/create", data)
+            .post("http://localhost:4000/api/mealplans/create", data)
             .then((response) => {
                 console.log("Response from server:", response.data);
                 setLoading(false);
-                navigate("/trainer-dashboard/mealplans");
+                navigate("/trainer/dashboard/mealplans");
             })
             .catch((error) => {
                 setLoading(false);

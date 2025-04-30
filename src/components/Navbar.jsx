@@ -8,10 +8,10 @@ const Navbar = () => {
         setIsMenuOpen(isMenuOpen);
     };
     const navItems = [
-        { path: "/", title: "Start a Search" },
-        { path: "/trainer-dashboard", title: " Trainer Dashboard" },
-        { path: "/myplans", title: "My Plans" },
-        { path: "/request-plan", title: "Request a plan" },
+        { path: "/trainer", title: "Start a Search" },
+        { path: "/trainer/dashboard", title: "Trainer Dashboard" },
+        { path: "/trainer/myplans", title: "My Plans" },
+        { path: "/trainer/request-plan", title: "Request a plan" },
     ];
     return (
         <header className="max-w-screen-2xl container mx-auto xl:px-24 px-4">
@@ -24,9 +24,7 @@ const Navbar = () => {
                     {navItems.map(({ path, title }) => (
                         <li key={path} className="text-base text-primary">
                             <NavLink to={path} className={({ isActive }) => (isActive ? "active" : "")}>
-                                {" "}
                                 {title}
-                                {/* other code */}
                             </NavLink>
                         </li>
                     ))}

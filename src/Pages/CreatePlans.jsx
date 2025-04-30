@@ -47,7 +47,7 @@ const CreatePlans = () => {
             return;
         }
         data.equipments = selectedOption.map((option) => option.value); // Convert to array of values
-        fetch("http://localhost:3000/plans", {
+        fetch("http://localhost:4000/api/plans", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
@@ -56,7 +56,7 @@ const CreatePlans = () => {
                 alert("Plan created successfully");
                 reset(); // Clear form after submission
                 setSelectedOption(null); // Clear selected equipment
-                window.location.href = "/trainer-dashboard"; // Redirect to my workout plans page
+                window.location.href = "/trainer/dashboard"; // Redirect to my workout plans page
             })
             .catch((error) => {
                 console.error("Error creating plan:", error);

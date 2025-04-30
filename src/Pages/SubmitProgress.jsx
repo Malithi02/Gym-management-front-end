@@ -17,15 +17,8 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const validationSchema = yup.object().shape({
-    date: yup
-        .date()
-        .required("Date is required")
-        .max(new Date(), "Date cannot be in the future"),
-    weight: yup
-        .number()
-        .required("Weight is required")
-        .positive("Weight cannot be negative")
-        .typeError("Weight must be a number"),
+    date: yup.date().required("Date is required").max(new Date(), "Date cannot be in the future"),
+    weight: yup.number().required("Weight is required").positive("Weight cannot be negative").typeError("Weight must be a number"),
     measurements: yup
         .string()
         .required("Measurements are required")
@@ -36,29 +29,31 @@ const validationSchema = yup.object().shape({
         .required("Completed workouts are required")
         .min(10, "Please provide more details about your workouts")
         .max(1000, "Workout details must be less than 1000 characters"),
-    notes: yup
-        .string()
-        .max(1000, "Notes must be less than 1000 characters")
+    notes: yup.string().max(1000, "Notes must be less than 1000 characters"),
 });
 
 const SubmitProgress = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    const userEmail = searchParams.get('email');
-    
+    const userEmail = searchParams.get("email");
+
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
         resolver: yupResolver(validationSchema),
         defaultValues: {
-            date: new Date().toISOString().split('T')[0],
+            date: new Date().toISOString().split("T")[0],
             weight: "",
             measurements: "",
             completedWorkouts: "",
-            notes: ""
-        }
+            notes: "",
+        },
     });
 
     const onSubmit = async (data) => {
@@ -68,9 +63,9 @@ const SubmitProgress = () => {
         }
 
         setSubmitting(true);
-        
+
         try {
-            const response = await fetch("http://localhost:3000/progress/create", {
+            const response = await fetch("http://localhost:4000/api/progress/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,18 +73,17 @@ const SubmitProgress = () => {
                 body: JSON.stringify({
                     ...data,
                     userEmail,
-                    date: new Date(data.date)
+                    date: new Date(data.date),
                 }),
             });
 
             const responseData = await response.json();
-            
+
             if (!response.ok || !responseData.success) {
                 throw new Error(responseData.message || "Failed to submit progress");
             }
 
-            navigate('/trainer-dashboard');
-            
+            navigate("/trainer/dashboard");
         } catch (error) {
             console.error("Error submitting progress:", error);
             setError(error.message || "Failed to submit progress. Please try again.");
@@ -123,7 +117,7 @@ const SubmitProgress = () => {
                     right: 0,
                     bottom: 0,
                     backgroundColor: "rgba(0, 0, 0, 0.5)",
-                }
+                },
             }}
         >
             <Box
@@ -131,13 +125,13 @@ const SubmitProgress = () => {
                     position: "relative",
                     zIndex: 1,
                     py: 8,
-                    px: { xs: 2, md: 4 }
+                    px: { xs: 2, md: 4 },
                 }}
             >
                 <Box
                     sx={{
                         maxWidth: "800px",
-                        mx: "auto"
+                        mx: "auto",
                     }}
                 >
                     <StyledPaper>
@@ -159,19 +153,19 @@ const SubmitProgress = () => {
                                     width: "60px",
                                     height: "4px",
                                     backgroundColor: "#e53e3e",
-                                    borderRadius: "2px"
-                                }
+                                    borderRadius: "2px",
+                                },
                             }}
                         >
                             Submit Weekly Progress
                         </Typography>
 
                         {error && (
-                            <Alert 
-                                severity="error" 
-                                sx={{ 
+                            <Alert
+                                severity="error"
+                                sx={{
                                     mb: 3,
-                                    borderRadius: 2
+                                    borderRadius: 2,
                                 }}
                             >
                                 {error}
@@ -186,7 +180,7 @@ const SubmitProgress = () => {
                                 label="Date"
                                 InputLabelProps={{ shrink: true }}
                                 InputProps={{
-                                    startAdornment: <FaCalendarAlt style={{ marginRight: 8, color: "#4a5568" }} />
+                                    startAdornment: <FaCalendarAlt style={{ marginRight: 8, color: "#4a5568" }} />,
                                 }}
                                 error={!!errors.date}
                                 helperText={errors.date?.message}
@@ -199,7 +193,7 @@ const SubmitProgress = () => {
                                 {...register("weight")}
                                 label="Current Weight (kg)"
                                 InputProps={{
-                                    startAdornment: <FaWeight style={{ marginRight: 8, color: "#4a5568" }} />
+                                    startAdornment: <FaWeight style={{ marginRight: 8, color: "#4a5568" }} />,
                                 }}
                                 error={!!errors.weight}
                                 helperText={errors.weight?.message}
@@ -215,7 +209,7 @@ const SubmitProgress = () => {
                                 label="Body Measurements (cm)"
                                 placeholder="Enter your measurements (e.g., chest: 100cm, waist: 80cm, hips: 90cm)"
                                 InputProps={{
-                                    startAdornment: <FaRuler style={{ marginRight: 8, color: "#4a5568" }} />
+                                    startAdornment: <FaRuler style={{ marginRight: 8, color: "#4a5568" }} />,
                                 }}
                                 error={!!errors.measurements}
                                 helperText={errors.measurements?.message}
@@ -230,7 +224,7 @@ const SubmitProgress = () => {
                                 label="Completed Workouts"
                                 placeholder="List the workouts you completed this week"
                                 InputProps={{
-                                    startAdornment: <FaDumbbell style={{ marginRight: 8, color: "#4a5568" }} />
+                                    startAdornment: <FaDumbbell style={{ marginRight: 8, color: "#4a5568" }} />,
                                 }}
                                 error={!!errors.completedWorkouts}
                                 helperText={errors.completedWorkouts?.message}
@@ -245,7 +239,7 @@ const SubmitProgress = () => {
                                 label="Additional Notes"
                                 placeholder="Any additional notes about your progress"
                                 InputProps={{
-                                    startAdornment: <FaStickyNote style={{ marginRight: 8, color: "#4a5568" }} />
+                                    startAdornment: <FaStickyNote style={{ marginRight: 8, color: "#4a5568" }} />,
                                 }}
                                 error={!!errors.notes}
                                 helperText={errors.notes?.message}
@@ -261,8 +255,8 @@ const SubmitProgress = () => {
                                         borderColor: "#4a5568",
                                         "&:hover": {
                                             borderColor: "#2d3748",
-                                            backgroundColor: "rgba(45, 55, 72, 0.04)"
-                                        }
+                                            backgroundColor: "rgba(45, 55, 72, 0.04)",
+                                        },
                                     }}
                                 >
                                     Cancel
@@ -274,9 +268,9 @@ const SubmitProgress = () => {
                                     sx={{
                                         backgroundColor: "#e53e3e",
                                         "&:hover": {
-                                            backgroundColor: "#c53030"
+                                            backgroundColor: "#c53030",
                                         },
-                                        px: 3
+                                        px: 3,
                                     }}
                                 >
                                     {submitting ? (
@@ -297,4 +291,4 @@ const SubmitProgress = () => {
     );
 };
 
-export default SubmitProgress; 
+export default SubmitProgress;

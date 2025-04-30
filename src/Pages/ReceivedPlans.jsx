@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Card, CardContent, Typography, Button, CircularProgress, Alert, Grid, Chip, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import {
+    Box,
+    Card,
+    CardContent,
+    Typography,
+    Button,
+    CircularProgress,
+    Alert,
+    Grid,
+    Chip,
+    IconButton,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FaDumbbell, FaCalendarAlt, FaUser, FaFileAlt, FaArrowRight, FaTrash } from "react-icons/fa";
 
@@ -36,29 +51,29 @@ const PlanCard = ({ plan, onProgressSubmit, onDelete }) => {
             <StyledCard>
                 <CardContent>
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                        <Typography variant="h5" component="h2" sx={{ 
-                            fontWeight: 600,
-                            color: "#2d3748",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1
-                        }}>
+                        <Typography
+                            variant="h5"
+                            component="h2"
+                            sx={{
+                                fontWeight: 600,
+                                color: "#2d3748",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                            }}
+                        >
                             <FaDumbbell style={{ color: "#e53e3e" }} />
                             {plan.title}
                         </Typography>
                         <Box display="flex" alignItems="center" gap={1}>
-                            <StatusChip 
-                                label="Active" 
-                                color="success" 
-                                size="small"
-                            />
-                            <IconButton 
+                            <StatusChip label="Active" color="success" size="small" />
+                            <IconButton
                                 onClick={handleDeleteClick}
-                                sx={{ 
+                                sx={{
                                     color: "#e53e3e",
                                     "&:hover": {
-                                        backgroundColor: "rgba(229, 62, 62, 0.1)"
-                                    }
+                                        backgroundColor: "rgba(229, 62, 62, 0.1)",
+                                    },
                                 }}
                             >
                                 <FaTrash />
@@ -89,20 +104,25 @@ const PlanCard = ({ plan, onProgressSubmit, onDelete }) => {
                         </Grid>
                     </Grid>
 
-                    <Box sx={{ 
-                        backgroundColor: "#f8fafc",
-                        borderRadius: 1,
-                        p: 2,
-                        mb: 3
-                    }}>
-                        <Typography variant="subtitle1" sx={{ 
-                            fontWeight: 600,
-                            color: "#2d3748",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                            mb: 1
-                        }}>
+                    <Box
+                        sx={{
+                            backgroundColor: "#f8fafc",
+                            borderRadius: 1,
+                            p: 2,
+                            mb: 3,
+                        }}
+                    >
+                        <Typography
+                            variant="subtitle1"
+                            sx={{
+                                fontWeight: 600,
+                                color: "#2d3748",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                                mb: 1,
+                            }}
+                        >
                             <FaFileAlt style={{ color: "#4a5568" }} />
                             Plan Details
                         </Typography>
@@ -142,22 +162,22 @@ const PlanCard = ({ plan, onProgressSubmit, onDelete }) => {
                     sx: {
                         borderRadius: 2,
                         maxWidth: "400px",
-                        width: "90%"
-                    }
+                        width: "90%",
+                    },
                 }}
             >
-                <DialogTitle sx={{ 
-                    color: "#2d3748",
-                    fontWeight: 600,
-                    borderBottom: "1px solid #e2e8f0",
-                    pb: 2
-                }}>
+                <DialogTitle
+                    sx={{
+                        color: "#2d3748",
+                        fontWeight: 600,
+                        borderBottom: "1px solid #e2e8f0",
+                        pb: 2,
+                    }}
+                >
                     Delete Plan
                 </DialogTitle>
                 <DialogContent sx={{ pt: 3 }}>
-                    <Typography>
-                        Are you sure you want to delete this plan? This action cannot be undone.
-                    </Typography>
+                    <Typography>Are you sure you want to delete this plan? This action cannot be undone.</Typography>
                 </DialogContent>
                 <DialogActions sx={{ p: 3, pt: 0 }}>
                     <Button
@@ -165,8 +185,8 @@ const PlanCard = ({ plan, onProgressSubmit, onDelete }) => {
                         sx={{
                             color: "#4a5568",
                             "&:hover": {
-                                backgroundColor: "rgba(74, 85, 104, 0.1)"
-                            }
+                                backgroundColor: "rgba(74, 85, 104, 0.1)",
+                            },
                         }}
                     >
                         Cancel
@@ -177,8 +197,8 @@ const PlanCard = ({ plan, onProgressSubmit, onDelete }) => {
                         sx={{
                             backgroundColor: "#e53e3e",
                             "&:hover": {
-                                backgroundColor: "#c53030"
-                            }
+                                backgroundColor: "#c53030",
+                            },
                         }}
                     >
                         Delete
@@ -203,7 +223,7 @@ const ReceivedPlans = () => {
 
     const fetchPlans = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/reply/${userEmail}`);
+            const response = await fetch(`http://localhost:4000/api/reply/${userEmail}`);
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
@@ -218,23 +238,23 @@ const ReceivedPlans = () => {
 
     const handleDelete = async (planId) => {
         try {
-            const response = await fetch(`http://localhost:3000/reply/${planId}`, {
-                method: 'DELETE',
+            const response = await fetch(`http://localhost:4000/api/reply/${planId}`, {
+                method: "DELETE",
                 headers: {
-                    'Content-Type': 'application/json',
-                }
+                    "Content-Type": "application/json",
+                },
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to delete plan');
+                throw new Error(errorData.message || "Failed to delete plan");
             }
 
-            setPlans(plans.filter(plan => plan._id !== planId));
+            setPlans(plans.filter((plan) => plan._id !== planId));
             setError(null);
         } catch (error) {
-            console.error('Error deleting plan:', error);
-            setError(error.message || 'Failed to delete plan. Please try again.');
+            console.error("Error deleting plan:", error);
+            setError(error.message || "Failed to delete plan. Please try again.");
         }
     };
 
@@ -242,8 +262,8 @@ const ReceivedPlans = () => {
         try {
             navigate(`/submit-progress?email=${userEmail}`);
         } catch (error) {
-            console.error('Error:', error);
-            alert('Failed to proceed. Please try again.');
+            console.error("Error:", error);
+            alert("Failed to proceed. Please try again.");
         }
     };
 
@@ -265,11 +285,16 @@ const ReceivedPlans = () => {
 
     return (
         <Box p={3}>
-            <Typography variant="h4" component="h1" gutterBottom sx={{ 
-                fontWeight: 600,
-                color: "#2d3748",
-                mb: 4
-            }}>
+            <Typography
+                variant="h4"
+                component="h1"
+                gutterBottom
+                sx={{
+                    fontWeight: 600,
+                    color: "#2d3748",
+                    mb: 4,
+                }}
+            >
                 Received Plans
             </Typography>
 
@@ -281,11 +306,7 @@ const ReceivedPlans = () => {
                 <Grid container spacing={3}>
                     {plans.map((plan) => (
                         <Grid item xs={12} key={plan._id}>
-                            <PlanCard
-                                plan={plan}
-                                onProgressSubmit={handleProgressSubmit}
-                                onDelete={handleDelete}
-                            />
+                            <PlanCard plan={plan} onProgressSubmit={handleProgressSubmit} onDelete={handleDelete} />
                         </Grid>
                     ))}
                 </Grid>

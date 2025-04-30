@@ -4,9 +4,7 @@ import { Box, Typography, TextField, Button, CircularProgress, Alert, Paper } fr
 import { FaRobot } from "react-icons/fa";
 import { GoogleGenAI } from "@google/genai";
 
-
 const ReplyRequest = () => {
-
     const { id } = useParams();
     const navigate = useNavigate();
     const [request, setRequest] = useState(null);
@@ -22,12 +20,11 @@ const ReplyRequest = () => {
 
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
-
     const ai = new GoogleGenAI({ apiKey: apiKey });
 
     const generateAIReply = async () => {
         if (!request) return;
-        
+
         setGeneratingReply(true);
         try {
             const prompt = `As a professional fitness trainer, generate a personalized workout plan reply for a client with the following details:
@@ -38,7 +35,7 @@ const ReplyRequest = () => {
             - Phone: ${request.phone}
             - Fitness Goal: ${request.goal}
             - Preferred Workout Days: ${request.preferredDays}
-            ${request.additionalInfo ? `- Additional Information: ${request.additionalInfo}` : ''}
+            ${request.additionalInfo ? `- Additional Information: ${request.additionalInfo}` : ""}
 
             Please generate a comprehensive workout plan that includes:
             1. A personalized greeting addressing the client by name
@@ -60,16 +57,16 @@ const ReplyRequest = () => {
 
             setReplyMessage(response.text);
         } catch (error) {
-            console.error('Error generating AI reply:', error);
-            setError('Failed to generate AI reply. Please try again.');
+            console.error("Error generating AI reply:", error);
+            setError("Failed to generate AI reply. Please try again.");
         } finally {
             setGeneratingReply(false);
         }
     };
-    
+
     const fetchRequestDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/requests/${id}`);
+            const response = await fetch(`http://localhost:4000/api/requests/${id}`);
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
@@ -82,14 +79,13 @@ const ReplyRequest = () => {
         }
     };
 
-
     const handleReplySubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:3000/reply`, {
+            const response = await fetch(`http://localhost:4000/api/reply`, {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     userEmail: request.email,
@@ -104,15 +100,15 @@ const ReplyRequest = () => {
             }
 
             // Update request status
-            await fetch(`http://localhost:3000/requests/${id}`, {
-                method: 'PUT',
+            await fetch(`http://localhost:4000/api/requests/${id}`, {
+                method: "PUT",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ status: 'replied' }),
+                body: JSON.stringify({ status: "replied" }),
             });
 
-            navigate("/trainer-dashboard");
+            navigate("/trainer/dashboard");
         } catch (err) {
             setError("Failed to submit reply. Please try again.");
         }
@@ -136,11 +132,16 @@ const ReplyRequest = () => {
 
     return (
         <Box p={3} maxWidth="800px" mx="auto">
-            <Typography variant="h4" component="h1" gutterBottom sx={{ 
-                fontWeight: 600,
-                color: "#2d3748",
-                mb: 4
-            }}>
+            <Typography
+                variant="h4"
+                component="h1"
+                gutterBottom
+                sx={{
+                    fontWeight: 600,
+                    color: "#2d3748",
+                    mb: 4,
+                }}
+            >
                 Reply to Request
             </Typography>
 

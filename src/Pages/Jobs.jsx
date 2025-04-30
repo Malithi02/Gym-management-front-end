@@ -1,12 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const Jobs = ({result}) => {
-  return (
-    <div>
-      {result}
-    </div>
-  )
-}
+const Jobs = ({ result }) => {
+    return <div>{result}</div>;
+};
 
-export default Jobs
-
+export default Jobs;

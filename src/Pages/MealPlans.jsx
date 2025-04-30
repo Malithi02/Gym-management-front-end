@@ -16,7 +16,7 @@ const MealPlans = () => {
     useEffect(() => {
         setLoading(true);
         axios
-            .get("http://localhost:3000/mealplans")
+            .get("http://localhost:4000/api/mealplans")
             .then((response) => {
                 setMealPlans(response.data);
                 setLoading(false);
@@ -28,16 +28,11 @@ const MealPlans = () => {
     }, []);
 
     const filteredMealPlans = mealplans.filter((mealplan) =>
-        Object.values(mealplan).some((value) =>
-            value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        Object.values(mealplan).some((value) => value.toString().toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     const totalPages = Math.ceil(filteredMealPlans.length / itemsPerPage);
-    const paginatedMealPlans = filteredMealPlans.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
+    const paginatedMealPlans = filteredMealPlans.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -97,26 +92,48 @@ const MealPlans = () => {
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan Name</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Nutrition Goals</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Meal Schedule</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Calorie Target</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Hydration</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Supplements</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                                            Nutrition Goals
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                                            Meal Schedule
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                                            Calorie Target
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                                            Hydration
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                                            Supplements
+                                        </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {paginatedMealPlans.map((mealplan, index) => (
                                         <tr key={mealplan._id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {(currentPage - 1) * itemsPerPage + index + 1}
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{mealplan.planName}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mealplan.planCategory}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mealplan.planType}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">{mealplan.nutritionGoals}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">{mealplan.mealSchedule}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">{mealplan.calorieTarget}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">{mealplan.hydration}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">{mealplan.supplements}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">
+                                                {mealplan.nutritionGoals}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">
+                                                {mealplan.mealSchedule}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">
+                                                {mealplan.calorieTarget}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">
+                                                {mealplan.hydration}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">
+                                                {mealplan.supplements}
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 <div className="flex items-center space-x-3">
                                                     <Link
@@ -169,10 +186,8 @@ const MealPlans = () => {
                                     <div>
                                         <p className="text-sm text-gray-700">
                                             Showing <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
-                                            <span className="font-medium">
-                                                {Math.min(currentPage * itemsPerPage, filteredMealPlans.length)}
-                                            </span>{" "}
-                                            of <span className="font-medium">{filteredMealPlans.length}</span> results
+                                            <span className="font-medium">{Math.min(currentPage * itemsPerPage, filteredMealPlans.length)}</span> of{" "}
+                                            <span className="font-medium">{filteredMealPlans.length}</span> results
                                         </p>
                                     </div>
                                     <div>
