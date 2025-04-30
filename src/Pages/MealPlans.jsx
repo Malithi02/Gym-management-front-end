@@ -56,7 +56,7 @@ const MealPlans = () => {
                             <AiOutlineSearch className="absolute left-3 top-3 text-gray-400" />
                         </div>
                         <Link
-                            to="/mealplans/create"
+                            to="/trainer/mealplans/create"
                             className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                         >
                             <MdOutlineAddBox className="text-xl text-black" />
@@ -137,21 +137,21 @@ const MealPlans = () => {
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 <div className="flex items-center space-x-3">
                                                     <Link
-                                                        to={`/mealplans/details/${mealplan._id}`}
+                                                        to={`/trainer/mealplans/details/${mealplan._id}`}
                                                         className="text-blue-600 hover:text-blue-800 transition-colors"
                                                         title="View Details"
                                                     >
                                                         <BsInfoCircle className="text-xl" />
                                                     </Link>
                                                     <Link
-                                                        to={`/mealplans/edit/${mealplan._id}`}
+                                                        to={`/trainer/mealplans/edit/${mealplan._id}`}
                                                         className="text-yellow-600 hover:text-yellow-800 transition-colors"
                                                         title="Edit"
                                                     >
                                                         <AiOutlineEdit className="text-xl" />
                                                     </Link>
                                                     <Link
-                                                        to={`/mealplans/delete/${mealplan._id}`}
+                                                        to={`/trainer/mealplans/delete/${mealplan._id}`}
                                                         className="text-red-600 hover:text-red-800 transition-colors"
                                                         title="Delete"
                                                     >

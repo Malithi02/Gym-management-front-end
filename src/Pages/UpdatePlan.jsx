@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import CreatableSelect from "react-select/creatable";
+import axios from "axios";
 
 // Validation schema (same as CreatePlans)
 const planSchema = yup.object({
@@ -111,19 +112,19 @@ const UpdatePlan = () => {
 
         data.equipments = selectedOption.map((opt) => opt.value);
 
-        fetch(`http://localhost:4000/api/plans/${id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-        })
-            .then(() => {
+        axios
+            .patch(`http://localhost:4000/api/plans/${id}`, data, {
+                headers: { "Content-Type": "application/json" },
+            })
+            .then((response) => {
                 alert("Plan updated successfully");
                 reset();
                 window.location.href = "/trainer/dashboard";
             })
             .catch((error) => {
                 console.error("Error updating plan:", error);
-                alert("Failed to update the plan. Please try again.");
+                const errorMessage = error.response?.data?.message || error.message;
+                alert(`Failed to update the plan: ${errorMessage}`);
             });
     };
 

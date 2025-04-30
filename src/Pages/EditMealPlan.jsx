@@ -60,7 +60,7 @@ const EditMealPlan = () => {
             .then((response) => {
                 console.log("Response from server:", response.data);
                 setLoading(false);
-                navigate("/trainer/dashboard/mealplans");
+                navigate("/trainer/mealplans");
             })
             .catch((error) => {
                 setLoading(false);

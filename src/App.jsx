@@ -92,6 +92,8 @@ function AppContent() {
                     <Route path="submit-progress/email/:email" element={<SubmitProgress />} />
                     <Route path="mealplans/create" element={<CreateMealPlan />} />
                     <Route path="mealplans/details/:id" element={<ShowMealPlan />} />
+                    <Route path="mealplans/edit/:id" element={<EditMealPlan />} />
+                    <Route path="mealplans/delete/:id" element={<DeleteMealPlan />} />
                     <Route path="mealplans" element={<MealPlans />} />
                 </Route>
             )}
