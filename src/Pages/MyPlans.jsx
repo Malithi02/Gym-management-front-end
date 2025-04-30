@@ -287,7 +287,7 @@ const MyPlans = () => {
                                             className="border-b hover:bg-gray-100"
                                             onClick={() => {
                                                 // redirect to the plan details page
-                                                window.location.href = `/request-plan/${plan._id}`;
+                                                window.location.href = `/trainer/request-plan/${plan._id}`;
                                             }}
                                         >
                                             <td className="px-6 py-4 text-sm">{requestedIndexOfFirstItem + index + 1}</td>
